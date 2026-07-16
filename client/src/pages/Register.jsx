@@ -27,7 +27,7 @@ const Register = () => {
     <div className="auth-page">
       <div className="auth-card">
         <h2>Create Account</h2>
-        <p className="auth-subtitle">Join DevFolio and showcase your projects</p>
+        <p className="auth-subtitle">Join Ahsin.dev and showcase your projects</p>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Name</label>

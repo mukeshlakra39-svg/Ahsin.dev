@@ -15,7 +15,6 @@ app.use("/uploads", express.static("uploads"));
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/projects", require("./routes/projects"));
-app.use("/api/comments", require("./routes/comments"));
 
 app.get("/", (req, res) => {
   res.json({ message: "Ahsin.dev API is running..." });

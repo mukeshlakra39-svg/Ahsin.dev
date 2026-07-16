@@ -27,7 +27,7 @@ const Login = () => {
     <div className="auth-page">
       <div className="auth-card">
         <h2>Welcome Back</h2>
-        <p className="auth-subtitle">Login to your DevFolio account</p>
+        <p className="auth-subtitle">Login to your Ahsin.dev account</p>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>

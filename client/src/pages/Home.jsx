@@ -62,7 +62,7 @@ const Home = () => {
   return (
     <div className="home-page">
       <div className="hero">
-        <h1>DevFolio</h1>
+        <h1><span className="logo-accent">A</span>hsin.dev</h1>
         <p>Showcase your projects. Solve problems. Get inspired.</p>
       </div>
 
