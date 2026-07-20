@@ -55,16 +55,12 @@ a {
 }
 
 .nav-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text);
   display: flex;
   align-items: center;
-  gap: 2px;
 }
 
 .nav-logo-img {
-  height: 36px;
+  height: 42px;
   width: auto;
   object-fit: contain;
 }
