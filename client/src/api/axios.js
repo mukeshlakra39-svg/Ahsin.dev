@@ -1,9 +1,11 @@
 import axios from "axios";
 
+const API_URL = import.meta.env.PROD
+  ? "https://ahsin-dev-backend.onrender.com/api"
+  : "http://localhost:5000/api";
+
 const API = axios.create({
-  baseURL: window.location.hostname === "localhost"
-    ? "http://localhost:5000/api"
-    : "https://ahsin-dev-backend.onrender.com/api",
+  baseURL: API_URL,
 });
 
 API.interceptors.request.use((config) => {
