@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LogOut, Plus, User, Home, Menu, X } from "lucide-react";
+import logo from "../assets/Ahsin.dev.png";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -20,7 +21,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <Link to="/" className="nav-logo" onClick={closeMenu}>
-          <span className="logo-accent">A</span>hsin.dev
+          <img src={logo} alt="Ahsin.dev" className="nav-logo-img" />
         </Link>
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X size={24} /> : <Menu size={24} />}

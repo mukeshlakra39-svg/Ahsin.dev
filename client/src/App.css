@@ -63,6 +63,12 @@ a {
   gap: 2px;
 }
 
+.nav-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
 .logo-accent {
   color: var(--primary);
   font-weight: 800;
