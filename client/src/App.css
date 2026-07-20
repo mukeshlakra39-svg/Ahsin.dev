@@ -60,9 +60,10 @@ a {
 }
 
 .nav-logo-img {
-  height: 42px;
+  height: 50px;
   width: auto;
   object-fit: contain;
+  filter: brightness(1.1);
 }
 
 .logo-accent {
