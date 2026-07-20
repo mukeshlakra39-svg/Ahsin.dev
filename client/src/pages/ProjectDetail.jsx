@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
-import { Heart, Bookmark, ExternalLink, Github, ArrowLeft, Trash2 } from "lucide-react";
+import { Heart, Bookmark, ExternalLink, Code2, ArrowLeft, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 const ProjectDetail = () => {
@@ -108,7 +108,7 @@ const ProjectDetail = () => {
         <div className="detail-links">
           {project.githubLink && (
             <a href={project.githubLink} target="_blank" rel="noreferrer" className="btn btn-outline">
-              <Github size={18} /> GitHub
+              <Code2 size={18} /> GitHub
             </a>
           )}
           {project.liveLink && (

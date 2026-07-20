@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import API from "../api/axios";
 import toast from "react-hot-toast";
-import { Save, Github, Linkedin, Globe } from "lucide-react";
+import { Save, Code2, Link2, Globe } from "lucide-react";
 
 const Profile = () => {
   const { user, updateProfile } = useAuth();
@@ -74,7 +74,7 @@ const Profile = () => {
           </div>
           <div className="form-row">
             <div className="form-group">
-              <label><Github size={16} /> GitHub</label>
+              <label><Code2 size={16} /> GitHub</label>
               <input
                 type="url"
                 placeholder="https://github.com/..."
@@ -83,7 +83,7 @@ const Profile = () => {
               />
             </div>
             <div className="form-group">
-              <label><Linkedin size={16} /> LinkedIn</label>
+              <label><Link2 size={16} /> LinkedIn</label>
               <input
                 type="url"
                 placeholder="https://linkedin.com/..."

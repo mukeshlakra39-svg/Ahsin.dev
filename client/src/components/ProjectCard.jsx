@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Heart, Bookmark, ExternalLink, Github } from "lucide-react";
+import { Heart, Bookmark, ExternalLink, Code2 } from "lucide-react";
 import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
@@ -63,7 +63,7 @@ const ProjectCard = ({ project, onLike, onBookmark }) => {
           <div className="card-links">
             {project.githubLink && (
               <a href={project.githubLink} target="_blank" rel="noreferrer" className="card-link">
-                <Github size={16} />
+                <Code2 size={16} />
               </a>
             )}
             {project.liveLink && (
