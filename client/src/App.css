@@ -204,6 +204,24 @@ a {
   color: var(--primary);
 }
 
+.forgot-link {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.forgot-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+.forgot-btn:hover {
+  text-decoration: underline;
+}
+
 /* Form */
 .form-group {
   margin-bottom: 15px;

@@ -104,4 +104,28 @@ router.put("/profile", auth, async (req, res) => {
   }
 });
 
+// Forgot password
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+      return res.status(400).json({ message: "Email and new password are required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "No account found with this email" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    res.json({ message: "Password reset successful" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = router;
