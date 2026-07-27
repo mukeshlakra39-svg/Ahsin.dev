@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Heart, Bookmark, ExternalLink, Code2 } from "lucide-react";
-import API from "../api/axios";
+import API, { API_URL } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 const ProjectCard = ({ project, onLike, onBookmark }) => {
@@ -33,7 +33,7 @@ const ProjectCard = ({ project, onLike, onBookmark }) => {
     <div className="project-card">
       {project.images?.[0] && (
         <div className="card-image">
-          <img src={`http://localhost:5000/${project.images[0]}`} alt={project.title} />
+          <img src={`${API_URL}/${project.images[0]}`} alt={project.title} />
         </div>
       )}
       <div className="card-body">

@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.PROD
-  ? "https://ahsin-dev-backend.onrender.com/api"
-  : "http://localhost:5000/api";
+export const API_URL = import.meta.env.PROD
+  ? "https://ahsin-dev-backend.onrender.com"
+  : "http://localhost:5000";
 
 const API = axios.create({
-  baseURL: API_URL,
+  baseURL: `${API_URL}/api`,
 });
 
 API.interceptors.request.use((config) => {

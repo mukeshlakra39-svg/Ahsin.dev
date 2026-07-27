@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import API from "../api/axios";
+import API, { API_URL } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { Heart, Bookmark, ExternalLink, Code2, ArrowLeft, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -81,7 +81,7 @@ const ProjectDetail = () => {
         {project.images?.length > 0 && (
           <div className="detail-images">
             {project.images.map((img, i) => (
-              <img key={i} src={`http://localhost:5000/${img}`} alt={`Project ${i + 1}`} />
+              <img key={i} src={`${API_URL}/${img}`} alt={`Project ${i + 1}`} />
             ))}
           </div>
         )}

@@ -44,10 +44,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="nav-link">
+              <Link to="/login" className="nav-link" onClick={closeMenu}>
                 Login
               </Link>
-              <Link to="/register" className="nav-btn register">
+              <Link to="/register" className="nav-btn register" onClick={closeMenu}>
                 Register
               </Link>
             </>
