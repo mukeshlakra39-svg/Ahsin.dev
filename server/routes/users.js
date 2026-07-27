@@ -30,7 +30,7 @@ router.get("/search", auth, async (req, res) => {
 router.get("/:id", auth, async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
-      .select("-password");
+      .select("-password -email");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
