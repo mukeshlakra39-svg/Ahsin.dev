@@ -740,3 +740,391 @@ a {
     padding: 20px;
   }
 }
+
+/* Profile Image Upload */
+.profile-avatar-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 15px;
+  cursor: pointer;
+}
+
+.profile-avatar-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary);
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  color: white;
+}
+
+.profile-avatar-wrapper:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.unique-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-input);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--primary);
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.unique-code:hover {
+  background: var(--border);
+}
+
+.follow-stats {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.follow-stats span {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.follow-stats strong {
+  color: var(--text);
+}
+
+.profile-bio {
+  color: var(--text-muted);
+  margin: 10px 0;
+}
+
+.profile-social {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.profile-social a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.profile-social a:hover {
+  text-decoration: underline;
+}
+
+/* Profile Tabs */
+.profile-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 30px 0 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+}
+
+.tab-btn:hover {
+  color: var(--text);
+}
+
+/* Media Grid */
+.my-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.media-thumb {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.media-thumb img,
+.media-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.section-title {
+  margin-bottom: 15px;
+  color: var(--text-muted);
+}
+
+/* Media Feed */
+.media-feed-page h2 {
+  margin-bottom: 20px;
+}
+
+.media-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.media-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.media-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.media-author-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.media-author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.media-author h4 {
+  font-size: 0.95rem;
+}
+
+.media-author .user-code {
+  font-size: 0.75rem;
+  color: var(--primary);
+}
+
+.media-file img,
+.media-file video {
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  background: #000;
+}
+
+.media-caption {
+  padding: 10px 16px;
+  font-size: 0.95rem;
+}
+
+.media-actions {
+  display: flex;
+  gap: 5px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.media-actions .action-btn.active {
+  color: var(--danger);
+}
+
+.media-actions .action-btn.active-dislike {
+  color: #ffa502;
+}
+
+.media-actions .action-btn.active-save {
+  color: #2ed573;
+}
+
+.media-comments {
+  padding: 0 16px 10px;
+}
+
+.comment-item {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.comment-item strong {
+  margin-right: 5px;
+}
+
+.comment-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg-input);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.comment-form input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* User Search */
+.search-page h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.user-results {
+  margin-top: 20px;
+}
+
+.user-result-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.user-result-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.user-result-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  object-fit: cover;
+}
+
+.user-result-info h4 {
+  font-size: 1rem;
+}
+
+.user-code {
+  font-size: 0.8rem;
+  color: var(--primary);
+}
+
+.user-bio-small {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
+/* Upload Page */
+.upload-page {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: border-color 0.3s;
+}
+
+.upload-area:hover {
+  border-color: var(--primary);
+}
+
+.upload-placeholder {
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-placeholder small {
+  font-size: 0.75rem;
+}
+
+.upload-preview {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .my-media-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .user-result-card {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .user-result-info {
+    flex-direction: column;
+  }
+}

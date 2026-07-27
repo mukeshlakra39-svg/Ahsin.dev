@@ -48,12 +48,20 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (data) => {
     const res = await API.put("/auth/profile", data);
-    setUser(res.data);
+    setUser((prev) => ({ ...prev, ...res.data }));
+    return res.data;
+  };
+
+  const updateProfileImage = async (formData) => {
+    const res = await API.post("/auth/profile-image", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    setUser((prev) => ({ ...prev, profileImage: res.data.profileImage }));
     return res.data;
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, updateProfile }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateProfile, updateProfileImage }}>
       {children}
     </AuthContext.Provider>
   );

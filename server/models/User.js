@@ -18,11 +18,16 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6,
     },
+    uniqueCode: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
     bio: {
       type: String,
       default: "",
     },
-    avatar: {
+    profileImage: {
       type: String,
       default: "",
     },
@@ -38,6 +43,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    following: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );

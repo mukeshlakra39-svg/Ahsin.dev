@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { LogOut, Plus, User, Home, Menu, X } from "lucide-react";
+import { LogOut, Plus, User, Home, Menu, X, Search, Upload, Rss } from "lucide-react";
 import logo from "../assets/Ahsin.dev.png";
 
 const Navbar = () => {
@@ -30,8 +30,17 @@ const Navbar = () => {
           <Link to="/" className="nav-link" onClick={closeMenu}>
             <Home size={18} /> Home
           </Link>
+          <Link to="/feed" className="nav-link" onClick={closeMenu}>
+            <Rss size={18} /> Feed
+          </Link>
           {user ? (
             <>
+              <Link to="/search-users" className="nav-link" onClick={closeMenu}>
+                <Search size={18} /> Find
+              </Link>
+              <Link to="/upload" className="nav-link" onClick={closeMenu}>
+                <Upload size={18} /> Upload
+              </Link>
               <Link to="/dashboard" className="nav-link" onClick={closeMenu}>
                 <Plus size={18} /> Add Project
               </Link>
