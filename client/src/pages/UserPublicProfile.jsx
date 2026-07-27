@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
@@ -8,6 +8,7 @@ import { Heart, Bookmark, MessageCircle, Code2, Link2, Globe } from "lucide-reac
 const UserPublicProfile = () => {
   const { id } = useParams();
   const { user: currentUser } = useAuth();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [userMedia, setUserMedia] = useState([]);
   const [userProjects, setUserProjects] = useState([]);
@@ -76,12 +77,20 @@ const UserPublicProfile = () => {
         </div>
 
         {!isMe && currentUser && (
-          <button
-            className={`btn ${isFollowing ? "btn-outline" : "btn-primary"}`}
-            onClick={handleFollow}
-          >
-            {isFollowing ? "Unfollow" : "Follow"}
-          </button>
+          <div className="profile-actions-row">
+            <button
+              className={`btn ${isFollowing ? "btn-outline" : "btn-primary"}`}
+              onClick={handleFollow}
+            >
+              {isFollowing ? "Unfollow" : "Follow"}
+            </button>
+            <button
+              className="btn btn-outline"
+              onClick={() => navigate(`/chat/${id}`)}
+            >
+              Chat
+            </button>
+          </div>
         )}
       </div>
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { LogOut, Plus, User, Home, Menu, X, Search, Upload, Rss } from "lucide-react";
+import { LogOut, Plus, User, Home, Menu, X, Search, Upload, Rss, MessageCircle } from "lucide-react";
 import logo from "../assets/Ahsin.dev.png";
 
 const Navbar = () => {
@@ -32,6 +32,9 @@ const Navbar = () => {
           </Link>
           <Link to="/feed" className="nav-link" onClick={closeMenu}>
             <Rss size={18} /> Feed
+          </Link>
+          <Link to="/chat" className="nav-link" onClick={closeMenu}>
+            <MessageCircle size={18} /> Chat
           </Link>
           {user ? (
             <>

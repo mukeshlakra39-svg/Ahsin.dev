@@ -12,6 +12,8 @@ import UserSearch from "./pages/UserSearch";
 import UserPublicProfile from "./pages/UserPublicProfile";
 import MediaFeed from "./pages/MediaFeed";
 import MediaUpload from "./pages/MediaUpload";
+import ChatList from "./pages/ChatList";
+import ChatWindow from "./pages/ChatWindow";
 import "./App.css";
 
 const ProtectedRoute = ({ children }) => {
@@ -34,6 +36,8 @@ const AppContent = () => {
           <Route path="/feed" element={<ProtectedRoute><MediaFeed /></ProtectedRoute>} />
           <Route path="/upload" element={<ProtectedRoute><MediaUpload /></ProtectedRoute>} />
           <Route path="/search-users" element={<ProtectedRoute><UserSearch /></ProtectedRoute>} />
+          <Route path="/chat" element={<ProtectedRoute><ChatList /></ProtectedRoute>} />
+          <Route path="/chat/:userId" element={<ProtectedRoute><ChatWindow /></ProtectedRoute>} />
           <Route
             path="/dashboard"
             element={
