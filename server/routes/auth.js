@@ -2,8 +2,10 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Otp = require("../models/Otp");
 const auth = require("../middleware/auth");
 const upload = require("../middleware/upload");
+const sendEmail = require("../utils/sendEmail");
 
 const router = express.Router();
 
@@ -141,6 +143,58 @@ router.post("/profile-image", auth, upload.single("profileImage"), async (req, r
 });
 
 router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "No account found with this email" });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await Otp.deleteMany({ email });
+    const otpDoc = new Otp({ email, otp });
+    await otpDoc.save();
+
+    await sendEmail(
+      email,
+      "Ahsin.dev - Password Reset OTP",
+      `Your OTP for password reset is: ${otp}. It is valid for 5 minutes.`
+    );
+
+    res.json({ message: "OTP sent to your email" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/verify-otp", async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP are required" });
+    }
+
+    const otpDoc = await Otp.findOne({ email, otp });
+    if (!otpDoc) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    await Otp.deleteMany({ email });
+
+    res.json({ message: "OTP verified successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
   try {
     const { email, newPassword } = req.body;
 

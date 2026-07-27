@@ -10,9 +10,10 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const [showForgot, setShowForgot] = useState(false);
+  const [forgotStep, setForgotStep] = useState(0);
   const [forgotEmail, setForgotEmail] = useState("");
-  const [forgotPassword, setForgotPassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [forgotLoading, setForgotLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -29,21 +30,48 @@ const Login = () => {
     }
   };
 
-  const handleForgotPassword = async (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
-    if (!forgotEmail || !forgotPassword) {
-      return toast.error("Email and new password are required");
-    }
-    if (forgotPassword.length < 6) {
-      return toast.error("Password must be at least 6 characters");
-    }
+    if (!forgotEmail) return toast.error("Email is required");
     setForgotLoading(true);
     try {
-      await API.post("/auth/forgot-password", { email: forgotEmail, newPassword: forgotPassword });
-      toast.success("Password reset successful! Now login with new password.");
-      setShowForgot(false);
+      await API.post("/auth/forgot-password", { email: forgotEmail });
+      toast.success("OTP sent! Check your email (or server logs)");
+      setForgotStep(2);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to send OTP");
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    if (!otp) return toast.error("OTP is required");
+    setForgotLoading(true);
+    try {
+      await API.post("/auth/verify-otp", { email: forgotEmail, otp });
+      toast.success("OTP verified! Set your new password.");
+      setForgotStep(3);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Invalid OTP");
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    if (!newPassword) return toast.error("New password is required");
+    if (newPassword.length < 6) return toast.error("Password must be at least 6 characters");
+    setForgotLoading(true);
+    try {
+      await API.post("/auth/reset-password", { email: forgotEmail, newPassword });
+      toast.success("Password reset successful! Now login.");
+      setForgotStep(0);
       setForgotEmail("");
-      setForgotPassword("");
+      setOtp("");
+      setNewPassword("");
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to reset password");
     } finally {
@@ -51,14 +79,20 @@ const Login = () => {
     }
   };
 
+  const resetForgotFlow = () => {
+    setForgotStep(0);
+    setForgotEmail("");
+    setOtp("");
+    setNewPassword("");
+  };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h2>Welcome Back</h2>
-        <p className="auth-subtitle">Login to your Ahsin.dev account</p>
-
-        {!showForgot ? (
+        {forgotStep === 0 && (
           <>
+            <h2>Welcome Back</h2>
+            <p className="auth-subtitle">Login to your Ahsin.dev account</p>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Email</label>
@@ -85,7 +119,7 @@ const Login = () => {
               </button>
             </form>
             <p className="forgot-link">
-              <button type="button" className="forgot-btn" onClick={() => setShowForgot(true)}>
+              <button type="button" className="forgot-btn" onClick={() => setForgotStep(1)}>
                 Forgot Password?
               </button>
             </p>
@@ -93,9 +127,13 @@ const Login = () => {
               Don't have an account? <Link to="/register">Register</Link>
             </p>
           </>
-        ) : (
+        )}
+
+        {forgotStep === 1 && (
           <>
-            <form onSubmit={handleForgotPassword}>
+            <h2>Reset Password</h2>
+            <p className="auth-subtitle">Enter your email to receive OTP</p>
+            <form onSubmit={handleSendOtp}>
               <div className="form-group">
                 <label>Email</label>
                 <input
@@ -106,13 +144,64 @@ const Login = () => {
                   required
                 />
               </div>
+              <button type="submit" className="btn btn-primary" disabled={forgotLoading}>
+                {forgotLoading ? "Sending OTP..." : "Send OTP"}
+              </button>
+            </form>
+            <p className="auth-link">
+              <button type="button" className="forgot-btn" onClick={resetForgotFlow}>
+                Back to Login
+              </button>
+            </p>
+          </>
+        )}
+
+        {forgotStep === 2 && (
+          <>
+            <h2>Enter OTP</h2>
+            <p className="auth-subtitle">OTP sent to <strong>{forgotEmail}</strong></p>
+            <form onSubmit={handleVerifyOtp}>
+              <div className="form-group">
+                <label>6-Digit OTP</label>
+                <input
+                  type="text"
+                  placeholder="Enter 6-digit OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  required
+                  maxLength={6}
+                  style={{ textAlign: "center", fontSize: "1.5rem", letterSpacing: "8px" }}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary" disabled={forgotLoading}>
+                {forgotLoading ? "Verifying..." : "Verify OTP"}
+              </button>
+            </form>
+            <p className="forgot-link">
+              <button type="button" className="forgot-btn" onClick={handleSendOtp} disabled={forgotLoading}>
+                Resend OTP
+              </button>
+            </p>
+            <p className="auth-link">
+              <button type="button" className="forgot-btn" onClick={() => setForgotStep(1)}>
+                Change Email
+              </button>
+            </p>
+          </>
+        )}
+
+        {forgotStep === 3 && (
+          <>
+            <h2>New Password</h2>
+            <p className="auth-subtitle">OTP verified! Set your new password.</p>
+            <form onSubmit={handleResetPassword}>
               <div className="form-group">
                 <label>New Password</label>
                 <input
                   type="password"
                   placeholder="Enter new password (min 6 chars)"
-                  value={forgotPassword}
-                  onChange={(e) => setForgotPassword(e.target.value)}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   required
                   minLength={6}
                 />
@@ -122,8 +211,8 @@ const Login = () => {
               </button>
             </form>
             <p className="auth-link">
-              <button type="button" className="forgot-btn" onClick={() => setShowForgot(false)}>
-                Back to Login
+              <button type="button" className="forgot-btn" onClick={() => setForgotStep(2)}>
+                Back
               </button>
             </p>
           </>
