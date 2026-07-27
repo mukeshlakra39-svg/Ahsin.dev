@@ -655,19 +655,87 @@ a {
   margin-bottom: 5px;
 }
 
-/* Username Edit */
-.username-edit {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-
 /* Profile Actions Row */
 .profile-actions-row {
   display: flex;
   gap: 10px;
   justify-content: center;
   margin-top: 10px;
+}
+
+/* Username Inline Edit */
+.username-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.username-edit-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.username-edit-btn:hover {
+  color: var(--primary);
+  background: var(--bg-input);
+}
+
+.username-edit-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.username-edit-inline input {
+  padding: 6px 12px;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  background: var(--bg-input);
+  color: var(--text);
+  font-size: 0.9rem;
+  width: 200px;
+  text-align: center;
+}
+
+.username-edit-inline input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.username-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.username-action-btn.save {
+  color: var(--success);
+}
+
+.username-action-btn.save:hover {
+  background: rgba(46, 213, 115, 0.15);
+}
+
+.username-action-btn.cancel {
+  color: var(--danger);
+}
+
+.username-action-btn.cancel:hover {
+  background: rgba(255, 71, 87, 0.15);
 }
 
 /* Chat List */

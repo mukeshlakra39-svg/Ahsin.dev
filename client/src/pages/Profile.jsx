@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import API from "../api/axios";
 import toast from "react-hot-toast";
-import { Save, Code2, Link2, Globe, Camera, Copy, AtSign } from "lucide-react";
+import { Save, Code2, Link2, Globe, Camera, Copy, AtSign, Pencil, Check, X } from "lucide-react";
 
 const Profile = () => {
   const { user, updateProfile, updateProfileImage } = useAuth();
@@ -15,6 +15,7 @@ const Profile = () => {
     website: "",
   });
   const [usernameVal, setUsernameVal] = useState("");
+  const [editingUsername, setEditingUsername] = useState(false);
   const [loading, setLoading] = useState(false);
   const [usernameLoading, setUsernameLoading] = useState(false);
   const [myProjects, setMyProjects] = useState([]);
@@ -71,12 +72,18 @@ const Profile = () => {
     try {
       await API.put("/auth/username", { username: usernameVal });
       toast.success("Username updated!");
+      setEditingUsername(false);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update username");
       setUsernameVal(user?.username || "");
     } finally {
       setUsernameLoading(false);
     }
+  };
+
+  const cancelUsernameEdit = () => {
+    setUsernameVal(user?.username || "");
+    setEditingUsername(false);
   };
 
   const copyUsername = () => {
@@ -106,33 +113,42 @@ const Profile = () => {
         </div>
         <h2>{user?.name}</h2>
         <p>{user?.email}</p>
-        {user?.username && (
-          <div className="unique-code" onClick={copyUsername}>
-            <AtSign size={14} /> {user.username} <Copy size={12} />
-          </div>
-        )}
-        <div className="follow-stats">
-          <span><strong>{user?.followers?.length || 0}</strong> Followers</span>
-          <span><strong>{user?.following?.length || 0}</strong> Following</span>
-        </div>
-      </div>
 
-      <div className="form-card">
-        <h3>Edit Username</h3>
-        <div className="username-edit">
-          <div className="form-group" style={{ flex: 1 }}>
-            <label><AtSign size={16} /> Username</label>
+        {!editingUsername ? (
+          <div className="username-display">
+            <div className="unique-code" onClick={copyUsername}>
+              <AtSign size={14} /> {user?.username} <Copy size={12} />
+            </div>
+            <button className="username-edit-btn" onClick={() => setEditingUsername(true)}>
+              <Pencil size={13} />
+            </button>
+          </div>
+        ) : (
+          <div className="username-edit-inline">
             <input
               type="text"
               value={usernameVal}
               onChange={(e) => setUsernameVal(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""))}
               placeholder="your_username"
               minLength={3}
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleUsernameChange();
+                if (e.key === "Escape") cancelUsernameEdit();
+              }}
             />
+            <button className="username-action-btn save" onClick={handleUsernameChange} disabled={usernameLoading}>
+              <Check size={16} />
+            </button>
+            <button className="username-action-btn cancel" onClick={cancelUsernameEdit}>
+              <X size={16} />
+            </button>
           </div>
-          <button className="btn btn-primary" onClick={handleUsernameChange} disabled={usernameLoading} style={{ marginTop: "22px" }}>
-            {usernameLoading ? "Saving..." : "Save"}
-          </button>
+        )}
+
+        <div className="follow-stats">
+          <span><strong>{user?.followers?.length || 0}</strong> Followers</span>
+          <span><strong>{user?.following?.length || 0}</strong> Following</span>
         </div>
       </div>
 
