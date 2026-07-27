@@ -48,7 +48,7 @@ const UserSearch = () => {
           <Search size={20} />
           <input
             type="text"
-            placeholder="Search people by name or code..."
+            placeholder="Search people by name or username..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -71,7 +71,7 @@ const UserSearch = () => {
                 )}
                 <div>
                   <h4>{u.name}</h4>
-                  <p className="user-code">{u.uniqueCode}</p>
+                  <p className="user-code">{u.username}</p>
                   {u.bio && <p className="user-bio-small">{u.bio}</p>}
                 </div>
               </Link>

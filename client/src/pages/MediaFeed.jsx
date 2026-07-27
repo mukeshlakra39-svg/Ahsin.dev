@@ -116,7 +116,7 @@ const MediaFeed = () => {
                   )}
                   <div>
                     <h4>{item.user?.name}</h4>
-                    <p className="user-code">{item.user?.uniqueCode}</p>
+                    <p className="user-code">{item.user?.username}</p>
                   </div>
                 </Link>
                 {isOwner && (

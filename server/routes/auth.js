@@ -9,35 +9,41 @@ const sendEmail = require("../utils/sendEmail");
 
 const router = express.Router();
 
-const generateUniqueCode = async () => {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let code;
-  let exists = true;
-  while (exists) {
-    code = "ah_";
-    for (let i = 0; i < 6; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    const user = await User.findOne({ uniqueCode: code });
-    exists = !!user;
+const generateUsername = async (name) => {
+  let base = name.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 15);
+  let username = base;
+  let counter = 1;
+  while (await User.findOne({ username })) {
+    username = base + counter;
+    counter++;
   }
-  return code;
+  return username;
 };
 
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, username } = req.body;
 
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    let finalUsername = username ? username.toLowerCase().replace(/[^a-z0-9_]/g, "") : await generateUsername(name);
+
+    if (finalUsername.length < 3) {
+      return res.status(400).json({ message: "Username must be at least 3 characters" });
+    }
+
+    const existingUsername = await User.findOne({ username: finalUsername });
+    if (existingUsername) {
+      return res.status(400).json({ message: "Username already taken" });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const uniqueCode = await generateUniqueCode();
 
-    user = new User({ name, email, password: hashedPassword, uniqueCode });
+    user = new User({ name, email, password: hashedPassword, username: finalUsername });
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -51,10 +57,13 @@ router.post("/register", async (req, res) => {
         name: user.name,
         email: user.email,
         bio: user.bio,
-        uniqueCode: user.uniqueCode,
+        username: user.username,
       },
     });
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({ message: "Username already taken" });
+    }
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -85,7 +94,7 @@ router.post("/login", async (req, res) => {
         email: user.email,
         bio: user.bio,
         profileImage: user.profileImage,
-        uniqueCode: user.uniqueCode,
+        username: user.username,
         github: user.github,
         linkedin: user.linkedin,
         website: user.website,
@@ -119,6 +128,40 @@ router.put("/profile", auth, async (req, res) => {
 
     res.json(user);
   } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.put("/username", auth, async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    if (!username) {
+      return res.status(400).json({ message: "Username is required" });
+    }
+
+    const cleanUsername = username.toLowerCase().replace(/[^a-z0-9_]/g, "");
+
+    if (cleanUsername.length < 3) {
+      return res.status(400).json({ message: "Username must be at least 3 characters" });
+    }
+
+    const existing = await User.findOne({ username: cleanUsername, _id: { $ne: req.user.id } });
+    if (existing) {
+      return res.status(400).json({ message: "Username already taken" });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { username: cleanUsername },
+      { new: true }
+    ).select("-password");
+
+    res.json(user);
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({ message: "Username already taken" });
+    }
     res.status(500).json({ message: "Server error" });
   }
 });

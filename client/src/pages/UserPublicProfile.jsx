@@ -55,7 +55,7 @@ const UserPublicProfile = () => {
           <div className="profile-avatar">{profile.name?.charAt(0).toUpperCase()}</div>
         )}
         <h2>{profile.name}</h2>
-        <p>{profile.uniqueCode}</p>
+        <p>{profile.username}</p>
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
 
         <div className="profile-social">

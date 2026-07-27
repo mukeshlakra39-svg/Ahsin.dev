@@ -13,12 +13,12 @@ router.get("/search", auth, async (req, res) => {
 
     const users = await User.find({
       $or: [
-        { uniqueCode: { $regex: q, $options: "i" } },
+        { username: { $regex: q, $options: "i" } },
         { name: { $regex: q, $options: "i" } },
       ],
       _id: { $ne: req.user.id },
     })
-      .select("name uniqueCode profileImage bio followers following")
+      .select("name username profileImage bio followers following")
       .limit(20);
 
     res.json(users);

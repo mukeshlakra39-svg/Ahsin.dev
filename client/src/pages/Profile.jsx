@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import API from "../api/axios";
 import toast from "react-hot-toast";
-import { Save, Code2, Link2, Globe, Camera, Copy } from "lucide-react";
+import { Save, Code2, Link2, Globe, Camera, Copy, AtSign } from "lucide-react";
 
 const Profile = () => {
   const { user, updateProfile, updateProfileImage } = useAuth();
@@ -14,7 +14,9 @@ const Profile = () => {
     linkedin: "",
     website: "",
   });
+  const [usernameVal, setUsernameVal] = useState("");
   const [loading, setLoading] = useState(false);
+  const [usernameLoading, setUsernameLoading] = useState(false);
   const [myProjects, setMyProjects] = useState([]);
   const [myMedia, setMyMedia] = useState([]);
   const [activeTab, setActiveTab] = useState("projects");
@@ -29,6 +31,7 @@ const Profile = () => {
         linkedin: user.linkedin || "",
         website: user.website || "",
       });
+      setUsernameVal(user.username || "");
       API.get(`/projects/user/${user.id || user._id}`).then((res) => setMyProjects(res.data));
       API.get(`/media/user/${user.id || user._id}`).then((res) => setMyMedia(res.data));
     }
@@ -60,9 +63,25 @@ const Profile = () => {
     }
   };
 
-  const copyCode = () => {
-    navigator.clipboard.writeText(user?.uniqueCode);
-    toast.success("Unique code copied!");
+  const handleUsernameChange = async () => {
+    if (!usernameVal || usernameVal.length < 3) {
+      return toast.error("Username must be at least 3 characters");
+    }
+    setUsernameLoading(true);
+    try {
+      await API.put("/auth/username", { username: usernameVal });
+      toast.success("Username updated!");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update username");
+      setUsernameVal(user?.username || "");
+    } finally {
+      setUsernameLoading(false);
+    }
+  };
+
+  const copyUsername = () => {
+    navigator.clipboard.writeText(user?.username);
+    toast.success("Username copied!");
   };
 
   return (
@@ -87,14 +106,33 @@ const Profile = () => {
         </div>
         <h2>{user?.name}</h2>
         <p>{user?.email}</p>
-        {user?.uniqueCode && (
-          <div className="unique-code" onClick={copyCode}>
-            <Code2 size={14} /> {user.uniqueCode} <Copy size={12} />
+        {user?.username && (
+          <div className="unique-code" onClick={copyUsername}>
+            <AtSign size={14} /> {user.username} <Copy size={12} />
           </div>
         )}
         <div className="follow-stats">
           <span><strong>{user?.followers?.length || 0}</strong> Followers</span>
           <span><strong>{user?.following?.length || 0}</strong> Following</span>
+        </div>
+      </div>
+
+      <div className="form-card">
+        <h3>Edit Username</h3>
+        <div className="username-edit">
+          <div className="form-group" style={{ flex: 1 }}>
+            <label><AtSign size={16} /> Username</label>
+            <input
+              type="text"
+              value={usernameVal}
+              onChange={(e) => setUsernameVal(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""))}
+              placeholder="your_username"
+              minLength={3}
+            />
+          </div>
+          <button className="btn btn-primary" onClick={handleUsernameChange} disabled={usernameLoading} style={{ marginTop: "22px" }}>
+            {usernameLoading ? "Saving..." : "Save"}
+          </button>
         </div>
       </div>
 

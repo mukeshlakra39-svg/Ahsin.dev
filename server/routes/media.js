@@ -23,7 +23,7 @@ router.post("/", auth, upload.single("media"), async (req, res) => {
     });
 
     await media.save();
-    await media.populate("user", "name uniqueCode profileImage");
+    await media.populate("user", "name username profileImage");
 
     res.status(201).json(media);
   } catch (err) {
@@ -37,7 +37,7 @@ router.get("/feed", auth, async (req, res) => {
     const skip = (page - 1) * limit;
 
     const media = await Media.find()
-      .populate("user", "name uniqueCode profileImage")
+      .populate("user", "name username profileImage")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(parseInt(limit));
@@ -53,7 +53,7 @@ router.get("/feed", auth, async (req, res) => {
 router.get("/user/:userId", auth, async (req, res) => {
   try {
     const media = await Media.find({ user: req.params.userId })
-      .populate("user", "name uniqueCode profileImage")
+      .populate("user", "name username profileImage")
       .sort({ createdAt: -1 });
 
     res.json(media);
@@ -65,7 +65,7 @@ router.get("/user/:userId", auth, async (req, res) => {
 router.get("/saved", auth, async (req, res) => {
   try {
     const media = await Media.find({ saves: req.user.id })
-      .populate("user", "name uniqueCode profileImage")
+      .populate("user", "name username profileImage")
       .sort({ createdAt: -1 });
 
     res.json(media);
@@ -180,7 +180,7 @@ router.post("/comment/:id", auth, async (req, res) => {
 
     media.comments.push({ user: req.user.id, text });
     await media.save();
-    await media.populate("comments.user", "name uniqueCode profileImage");
+    await media.populate("comments.user", "name username profileImage");
 
     res.json(media.comments);
   } catch (err) {

@@ -4,16 +4,19 @@ import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
 const Register = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({ name: "", username: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.username && formData.username.length < 3) {
+      return toast.error("Username must be at least 3 characters");
+    }
     setLoading(true);
     try {
-      await register(formData.name, formData.email, formData.password);
+      await register(formData.name, formData.email, formData.password, formData.username);
       toast.success("Registration successful!");
       navigate("/");
     } catch (err) {
@@ -38,6 +41,17 @@ const Register = () => {
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
             />
+          </div>
+          <div className="form-group">
+            <label>Username (optional)</label>
+            <input
+              type="text"
+              placeholder="Choose a username or leave blank"
+              value={formData.username}
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+              minLength={3}
+            />
+            <small className="form-hint">Min 3 characters. Letters, numbers, underscore only. Auto-generated if left blank.</small>
           </div>
           <div className="form-group">
             <label>Email</label>
