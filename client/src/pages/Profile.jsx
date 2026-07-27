@@ -112,6 +112,7 @@ const Profile = () => {
           />
         </div>
         <h2>{user?.name}</h2>
+        <p className="profile-username">@{user?.username}</p>
         <p>{user?.email}</p>
 
         {!editingUsername ? (
