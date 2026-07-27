@@ -13,7 +13,11 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       API.get("/auth/me")
-        .then((res) => setUser(res.data))
+        .then((res) => {
+          const data = res.data;
+          data.id = data._id;
+          setUser(data);
+        })
         .catch(() => {
           localStorage.removeItem("token");
         })
