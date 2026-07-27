@@ -12,7 +12,10 @@ router.get("/search", auth, async (req, res) => {
     }
 
     const users = await User.find({
-      uniqueCode: { $regex: q, $options: "i" },
+      $or: [
+        { uniqueCode: { $regex: q, $options: "i" } },
+        { name: { $regex: q, $options: "i" } },
+      ],
       _id: { $ne: req.user.id },
     })
       .select("name uniqueCode profileImage bio followers following")

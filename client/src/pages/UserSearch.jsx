@@ -48,7 +48,7 @@ const UserSearch = () => {
           <Search size={20} />
           <input
             type="text"
-            placeholder="Search by unique code (e.g., AH_ABC123)"
+            placeholder="Search people by name or code..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
